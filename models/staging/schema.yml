@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: stg_events
+    description: "Cleaned and flattened GA4 raw events. All mart models reference this view."
+    columns:
+      - name: event_date
+        description: "Date the event occurred"
+        tests:
+          - not_null
+
+      - name: event_timestamp
+        description: "Exact timestamp of the event in UTC"
+        tests:
+          - not_null
+
+      - name: event_name
+        description: "Type of event e.g. page_view, purchase, add_to_cart"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['page_view', 'user_engagement', 'scroll', 'view_item',
+                         'session_start', 'first_visit', 'view_promotion', 'add_to_cart',
+                         'begin_checkout', 'select_item', 'view_search_results',
+                         'add_shipping_info', 'add_payment_info', 'select_promotion',
+                         'purchase', 'click', 'view_item_list']
+
+      - name: user_pseudo_id
+        description: "Anonymised user identifier — one browser cookie, not one person"
+        tests:
+          - not_null
+
+      - name: session_id
+        description: "Session identifier extracted from event_params array"
+
+      - name: source
+        description: "Traffic source e.g. google, direct"
+
+      - name: medium
+        description: "Traffic medium e.g. organic, cpc, referral"
+
+      - name: campaign
+        description: "Campaign name from traffic source"
+
+      - name: page_location
+        description: "Full URL of the page where the event occurred"
+
+      - name: event_value
+        description: "Revenue for purchase events. Null for all other event types."
+
+      - name: transaction_id
+        description: "Unique transaction ID for purchase events. Null for all other event types."
+
+      - name: country
+        description: "Country of the user"
+
+      - name: city
+        description: "City of the user"
+
+      - name: device_category
+        description: "Device type: desktop, mobile, tablet"
+
+      - name: operating_system
+        description: "User's operating system e.g. Windows, Android, iOS"

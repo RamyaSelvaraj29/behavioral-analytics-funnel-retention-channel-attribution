@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: mart_funnel
+    description: "Six-stage purchase funnel. Each row is one funnel stage with unique user count."
+    columns:
+      - name: stage
+        description: "Funnel stage name e.g. page_view, purchase"
+        tests:
+          - not_null
+          - unique
+      - name: stage_order
+        description: "Numeric order of the funnel stage (1=top, 6=bottom)"
+        tests:
+          - not_null
+      - name: unique_users
+        description: "Count of distinct users who completed this stage"
+        tests:
+          - not_null
+
+  - name: mart_channel_performance
+    description: "Conversion rate and revenue by traffic source and medium. Channels with fewer than 100 users excluded."
+    columns:
+      - name: source
+        description: "Traffic source e.g. google, direct"
+        tests:
+          - not_null
+      - name: medium
+        description: "Traffic medium e.g. organic, cpc, referral"
+        tests:
+          - not_null
+      - name: total_users
+        description: "Total unique users from this channel"
+        tests:
+          - not_null
+      - name: purchasers
+        description: "Unique users who completed a purchase"
+        tests:
+          - not_null
+      - name: conversion_rate_pct
+        description: "Purchasers / total_users * 100"
+      - name: total_revenue
+        description: "Sum of event_value for all purchase events from this channel"
+
+  - name: mart_cohort_retention
+    description: "Weekly cohort retention. One row per cohort_week and week_number combination."
+    columns:
+      - name: cohort_week
+        description: "Week of the user's first visit"
+        tests:
+          - not_null
+      - name: week_number
+        description: "Weeks since first visit. 0 = first week, 1 = one week later."
+        tests:
+          - not_null
+      - name: cohort_size
+        description: "Total users in this cohort"
+        tests:
+          - not_null
+      - name: retained_users
+        description: "Users from this cohort active in this week"
+        tests:
+          - not_null
+      - name: retention_rate_pct
+        description: "retained_users / cohort_size * 100"
+        tests:
+          - not_null
+
+  - name: mart_daily_trend
+    description: "Daily traffic and purchase conversion rate across the 92-day period."
+    columns:
+      - name: event_date
+        description: "The date"
+        tests:
+          - not_null
+          - unique
+      - name: daily_users
+        description: "Unique users active on this day"
+        tests:
+          - not_null
+      - name: daily_purchasers
+        description: "Unique users who purchased on this day"
+        tests:
+          - not_null
+      - name: purchase_rate_pct
+        description: "daily_purchasers / daily_users * 100"
+
+  - name: mart_day_retention
+    description: "D7, D30, D60 retention by weekly cohort. Later cohorts have limited follow-up due to 92-day dataset window."
+    columns:
+      - name: cohort_week
+        description: "Week of the user's first visit"
+        tests:
+          - not_null
+      - name: cohort_size
+        description: "Total users in this cohort"
+        tests:
+          - not_null
+      - name: d7_retention_pct
+        description: "% of cohort who returned within 7 days"
+      - name: d30_retention_pct
+        description: "% of cohort who returned within 30 days"
+      - name: d60_retention_pct
+        description: "% of cohort who returned within 60 days"
