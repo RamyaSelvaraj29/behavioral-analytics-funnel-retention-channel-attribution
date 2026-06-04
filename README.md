@@ -10,6 +10,12 @@ An end-to-end analytics pipeline that transforms 4.3M+ raw behavioral events int
 
 ---
 
+## 🔗Live Dashboard
+
+A fully interactive Looker Studio dashboard built to explore funnel performance, channel attribution, and cohort retention.
+
+[![View Dashboard](https://img.shields.io/badge/Looker%20Studio-Live%20Dashboard-blue)](https://datastudio.google.com/s/ljSW-Zjt7DA)
+
 ## 🧭 Project Overview
 Every product and growth team faces the same foundational challenge, how do you turn millions of raw behavioral events into decisions that actually move the business?
 
